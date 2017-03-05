@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+ 
+<tiles-definitions>
+	<definition name="digital.pages.marvel.character.login" template="/layouts/template.jsp">
+		<put-attribute name="title" value="Digital Pages - Marvel" />
+		<put-attribute name="header" value="/tiles/header.jsp" />
+		<put-attribute name="body" value="/views/login.jsp" />
+		<put-attribute name="footer" value="/tiles/footer.jsp" />
+	</definition>
+
+	<definition name="digital.pages.marvel.character.list" extends="digital.pages.marvel.character.login">
+		<put-attribute name="title" value="Character" />
+		<put-attribute name="body" value="/views/character/list.jsp" />
+	</definition>
+
+	<definition name="digital.pages.marvel.character.profile" extends="digital.pages.marvel.character.login">
+		<put-attribute name="title" value="Character" />
+		<put-attribute name="body" value="/views/character/profile.jsp" />
+	</definition>
+</tiles-definitions>
