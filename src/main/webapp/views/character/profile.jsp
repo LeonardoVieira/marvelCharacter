@@ -48,8 +48,8 @@
 
 			<div id="Info">
 				<p>
-					<strong>Título: </strong> ${comic.title}
-					<strong>número da capa: </strong> ${comic.digitalId}
+					<strong style="width: 50px;">Título: </strong> ${comic.title}
+					<strong style="width: 150px;">número da capa: </strong>${comic.digitalId}
 				</p>
 				<p>
 					<textarea readonly="true" cols="70" rows="5">${comic.description}</textarea>
