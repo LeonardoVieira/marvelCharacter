@@ -58,8 +58,6 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 	@Override
 	public void login(User user) throws MarvelException {
 		createRestClient(user);
-
-		downloadCharacterProfile();
 	}
 
 	@Override
@@ -69,6 +67,7 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 			for(char alphabet = 'A'; alphabet <= 'Z'; alphabet++) {
 				Result<MarvelCharacter> characters = client.getCharacters(new CharacterParameterBuilder().nameStartsWith(String.valueOf(alphabet)).create());
 				save(characters.getData().getResults());
+				break;
 			}
 		} catch (IOException e) {
 			throw new MarvelException("Não foi possivel baixar os dados dos personagens");

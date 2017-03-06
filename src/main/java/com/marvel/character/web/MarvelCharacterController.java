@@ -44,6 +44,7 @@ public class MarvelCharacterController {
 	public String postLogin(Model model, User user) {
 		try {
 			marvelCharacterService.login(user);
+			marvelCharacterService.downloadCharacterProfile();
 
 			return list(model);
 		} catch (Exception e) {
