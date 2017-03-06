@@ -2,30 +2,6 @@
 	font-family: arial, helvetica, sans-serif;
 }
 
-.marvel_form label {
-	width: 20%;
-	margin-top: 3px;
-	display: inline-block;
-	float: left;
-	padding: 3px;
-}
-
-.marvel_form input[id="nome"] {
-	width: 80%;
-}
-
-.marvel_form input {
-	height: 20px;
-	width: 50%;
-	padding: 5px 8px;
-}
-
-.marvel_form input[type="button"] {
-	height: 30px;
-	padding: 5px 8px;
-	width: 10%;
-}
-
 .marvel_form h2 {
 	margin: 0;
 	display: inline;
@@ -50,17 +26,6 @@
 	border-bottom: 1px solid #777;
 }
 
-.marvel_form input {
-	border: 1px solid #aaa;
-	box-shadow: 0px 0px 3px #ccc, 0 10px 15px #eee inset;
-	border-radius: 2px;
-}
-
-.marvel_form input:focus {
-	background: #fff;
-	border: 1px solid #555;
-	box-shadow: 0 0 3px #aaa;
-}
 
 #ProfilePage {
 	margin: 50px auto;
@@ -88,5 +53,5 @@
 
 #Info strong {
 	display: inline-block;
-	width: 100px;
+	width: 120px;
 }

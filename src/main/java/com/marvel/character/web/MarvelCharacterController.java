@@ -62,16 +62,8 @@ public class MarvelCharacterController {
 
 	@RequestMapping(value = "/marvelCharacter/profile", method = RequestMethod.GET)
 	public String profile(Model model, @RequestParam(name = "id") Integer id) {
-		model.addAttribute("marvelCharacter", marvelCharacterService.findAll().get(0));
+		model.addAttribute("marvelCharacter", marvelCharacterService.findById(id));
+		model.addAttribute("comics", marvelCharacterService.findComicsByCharacterId(id).getData().getResults());
 		return MAPPING_PROFILE;
 	}
-
-//	@RequestMapping(value = "/login", method = RequestMethod.GET)
-//	public String include(Model model) {
-//		String publicKey = "2fa4526a7bb8b4684fe2890b077e8a45";
-//		String privateKey = "204599ccf56790420feae8d202fbde027858b7ee";
-//
-//		model.addAttribute("marvelCharacterList", marvelCharacterService.findAll());
-//		return MAPPING_LIST;
-//	}
 }

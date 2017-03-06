@@ -9,12 +9,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.marvel.character.model.Comic;
 import com.marvel.character.model.MarvelCharacter;
 import com.marvel.character.model.Result;
 import com.marvel.character.model.User;
 import com.marvel.character.repository.MarvelCharacterRepository;
 import com.marvel.character.service.MarvelCharacterService;
 import com.marvel.character.util.parameters.CharacterParameterBuilder;
+import com.marvel.character.util.parameters.ComicParametersBuilder;
 import com.marvel.character.web.RestClient;
 
 /**
@@ -26,6 +28,8 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 
 	@Autowired
 	private MarvelCharacterRepository marvelCharacterRepository;
+
+	RestClient client = null;
 
 	/*
 	 * (non-Javadoc)
@@ -52,16 +56,39 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 	@Override
 	public void login(User user) throws Exception {
 		try {
-			RestClient client = new RestClient(user.getPrivateKey(), user.getPublicKey());
+			createRestClient(user);
 
 			for(char alphabet = 'A'; alphabet <= 'Z'; alphabet++) {
 				Result<MarvelCharacter> characters = client.getCharacters(new CharacterParameterBuilder().nameStartsWith(String.valueOf(alphabet)).create());
 				save(characters.getData().getResults());
+				
+				break;
 			}
 		} catch (IOException e) {
 			throw new Exception(e.getMessage());
 			// TODO: handle exception
 			//TODO THROW LOGIN EXCEPTION
 		}
+	}
+
+	private void createRestClient(User user) {
+		client = new RestClient(user.getPrivateKey(), user.getPublicKey());
+	}
+
+	@Override
+	public MarvelCharacter findById(Integer id) {
+		return marvelCharacterRepository.findOne(id);
+	}
+
+	@Override
+	public Result<Comic> findComicsByCharacterId(Integer id) {
+		try {
+			return client.getCharactersComics(new ComicParametersBuilder(id).create());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
