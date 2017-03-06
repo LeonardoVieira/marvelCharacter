@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.marvel.character.exception.MarvelException;
 import com.marvel.character.model.Comic;
 import com.marvel.character.model.MarvelCharacter;
 import com.marvel.character.model.Result;
@@ -54,18 +56,22 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 	 * @see com.digital.pages.marvel.service.MarvelCharacterService#login(com.digital.pages.marvel.model.User)
 	 */
 	@Override
-	public void login(User user) throws Exception {
-		try {
-			createRestClient(user);
+	public void login(User user) throws MarvelException {
+		createRestClient(user);
 
+		downloadCharacterProfile();
+	}
+
+	@Override
+	@Cacheable("characters")
+	public void downloadCharacterProfile() throws MarvelException {
+		try {
 			for(char alphabet = 'A'; alphabet <= 'Z'; alphabet++) {
 				Result<MarvelCharacter> characters = client.getCharacters(new CharacterParameterBuilder().nameStartsWith(String.valueOf(alphabet)).create());
 				save(characters.getData().getResults());
 			}
 		} catch (IOException e) {
-			throw new Exception(e.getMessage());
-			// TODO: handle exception
-			//TODO THROW LOGIN EXCEPTION
+			throw new MarvelException("Não foi possivel baixar os dados dos personagens");
 		}
 	}
 

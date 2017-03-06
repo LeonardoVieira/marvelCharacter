@@ -1,10 +1,19 @@
 package com.marvel.character;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
+import org.springframework.cache.support.SimpleCacheManager;
+import org.springframework.context.annotation.Bean;
 
+@EnableCaching
 @SpringBootApplication
 public class WebApplication extends SpringBootServletInitializer {
 
@@ -16,28 +25,29 @@ public class WebApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(WebApplication.class, args);
 	}
+	/**
+	 * Spring Cache configuring method
+	 * 
+	 * @return {@link CacheManager}
+	 */
+	@Bean
+	public CacheManager cacheManager() {
+		SimpleCacheManager cacheManager = new SimpleCacheManager();
+		cacheManager.setCaches(createCache());
+		return cacheManager;
+	}
 
-//	public static void main(String[] args) throws IOException {
-//		String publicKey = "2fa4526a7bb8b4684fe2890b077e8a45";
-//		String privateKey = "204599ccf56790420feae8d202fbde027858b7ee";
-//
-//		RestClient client = new RestClient(privateKey, publicKey);
-//		Map<String, Result<MarvelCharacter>> map = new HashMap<String, Result<MarvelCharacter>>();
-//
-//		for (char alphabet = 'a'; alphabet <= 'z'; alphabet++) {
-//			String letter = String.valueOf(alphabet);
-//			map.put(letter, client.getCharacters(new CharacterParameterBuilder().nameStartsWith(letter).create()));
-//		}
-//
-//		for (Entry<String, Result<MarvelCharacter>> entry : map.entrySet()) {
-//			System.out.println("*********************");
-//			System.out.println("Letra: " + entry.getKey());
-//			System.out.println("Total: " + entry.getValue().getData().getTotal());
-//			for (MarvelCharacter marvel : entry.getValue().getData().getResults()) {
-//				System.out.println(marvel.getName());
-//			}
-//
-//			System.out.println("*********************");
-//		}
-//	}
+	/**
+	 * Creates the list containing the names of the caches that will be used in
+	 * the application
+	 * 
+	 * @return {@link List}<{@link ConcurrentMapCache}>
+	 */
+	private List<ConcurrentMapCache> createCache() {
+		List<ConcurrentMapCache> caches = new ArrayList<ConcurrentMapCache>();
+
+		caches.add(new ConcurrentMapCache("characters"));
+
+		return caches;
+	}
 }
