@@ -61,8 +61,6 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 			for(char alphabet = 'A'; alphabet <= 'Z'; alphabet++) {
 				Result<MarvelCharacter> characters = client.getCharacters(new CharacterParameterBuilder().nameStartsWith(String.valueOf(alphabet)).create());
 				save(characters.getData().getResults());
-				
-				break;
 			}
 		} catch (IOException e) {
 			throw new Exception(e.getMessage());
