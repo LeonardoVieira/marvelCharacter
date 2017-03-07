@@ -13,6 +13,7 @@
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 		<script type="text/javascript" src="${contextPath}/resources/js/common.js"></script>
 		<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<link rel="shortcut icon" type="image/png" href="${contextPath}/resources/img/favico.png"/>
 
 		<link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 		<link href="${contextPath}/resources/css/common.css" rel="stylesheet">
