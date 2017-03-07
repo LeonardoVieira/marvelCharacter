@@ -52,8 +52,8 @@ $(document).ready(function() {
 		<table id="marvelTable" class="display" cellspacing="0" width="100%">
 			<thead>
 				<tr>
-					<th width="20%">Nome</th>
-					<th width="60%">Descrição</th>
+					<th width="30%">Nome</th>
+					<th width="50%">Descrição</th>
 					<th width="20%">Ultima Atualização</th>
 				</tr>
 			</thead>
