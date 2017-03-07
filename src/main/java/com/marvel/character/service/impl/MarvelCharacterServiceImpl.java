@@ -55,7 +55,7 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 	}
 
 	@Override
-//	@Cacheable("characters")
+	@Cacheable("characters")
 	public void downloadCharacterProfile(String privateKey, String publicKey) throws MarvelException {
 		try {
 			RestClient client = new RestClient(privateKey, publicKey);
