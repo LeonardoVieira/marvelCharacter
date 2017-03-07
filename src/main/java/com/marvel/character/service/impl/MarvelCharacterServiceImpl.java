@@ -74,19 +74,18 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 				if(value < total) {
 					value = value + 400;
 				} else {
-					while(threadDownload.isAlive()) {
-						cont = true;
-					}
-
 					cont = false;
 				}
 			}
 
-//			java.lang.Thread.sleep(15000);
+			java.lang.Thread.sleep(15000);
 
 			save(list);
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, "Não foi possivel baixar os dados dos personagens");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
