@@ -17,6 +17,7 @@ import com.marvel.character.model.CollectionURIDeserializer;
 import com.marvel.character.model.Comic;
 import com.marvel.character.model.MarvelCharacter;
 import com.marvel.character.model.Result;
+import com.marvel.character.util.Proxy;
 import com.marvel.character.util.URLFactory;
 import com.marvel.character.util.parameters.CharacterParameterBuilder;
 import com.marvel.character.util.parameters.CharacterParameters;

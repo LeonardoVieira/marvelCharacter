@@ -1,4 +1,4 @@
-package com.marvel.character.web;
+package com.marvel.character.util;
 
 public class Proxy {
 	private final String host;
