@@ -50,7 +50,7 @@ public class MarvelCharacterController {
 	public String postLogin(Model model, User user) {
 		try {
 			httpSession.setAttribute("user", user);
-			marvelCharacterService.downloadCharacterProfile(user);
+			marvelCharacterService.downloadCharacterProfile(user.getPrivateKey(), user.getPublicKey());
 
 			return list(model);
 		} catch (MarvelException e) {
@@ -71,7 +71,8 @@ public class MarvelCharacterController {
 	public String profile(Model model, @RequestParam(name = "id") Integer id) {
 		try {
 			model.addAttribute("marvelCharacter", marvelCharacterService.findById(id));
-			model.addAttribute("comics", marvelCharacterService.findComicsByCharacterId(id, (User)httpSession.getAttribute("user")).getData().getResults());
+			User user = ((User) httpSession.getAttribute("user"));
+			model.addAttribute("comics", marvelCharacterService.findComicsByCharacterId(id, user.getPrivateKey(), user.getPublicKey()).getData().getResults());
 
 			return MAPPING_PROFILE;
 		} catch (MarvelException e) {

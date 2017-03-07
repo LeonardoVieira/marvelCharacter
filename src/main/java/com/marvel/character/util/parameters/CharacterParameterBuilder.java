@@ -23,6 +23,11 @@ public class CharacterParameterBuilder {
 		return this;
 	}
 
+	public CharacterParameterBuilder withOffset(Integer offset) {
+		characterParameters.setOffset(offset);
+		return this;
+	}
+
 	public CharacterParameters create() {
 		return characterParameters;
 	}
