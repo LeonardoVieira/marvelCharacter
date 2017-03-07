@@ -4,6 +4,7 @@
 package com.marvel.character.service.impl;
 
 import java.io.IOException;
+import java.lang.Thread.State;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -54,31 +55,38 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 	}
 
 	@Override
-	@Cacheable("characters")
+//	@Cacheable("characters")
 	public void downloadCharacterProfile(String privateKey, String publicKey) throws MarvelException {
 		try {
 			RestClient client = new RestClient(privateKey, publicKey);
 			List<MarvelCharacter> list = new ArrayList<>();
 
-			downloadCharacterProfile(client, list, 0);
+			Result<MarvelCharacter> characters = client.getCharacters(new CharacterParameterBuilder().withOffset(0).withLimit(1).create());
+			int total = characters.getData().getTotal(); //1485
+			boolean cont = true;
+			int value = 0;
 
-//			for(char alphabet = 'A'; alphabet <= 'Z';alphabet++) {
-//				Result<MarvelCharacter> characters = client.getCharacters(new CharacterParameterBuilder().nameStartsWith(String.valueOf(alphabet)).create());
-//				list.addAll(characters.getData().getResults());
-//			}
+			ThreadDownload threadDownload = null;
+			while(cont) {
+				threadDownload = new ThreadDownload(client, value, list);
+				threadDownload.start();
+
+				if(value < total) {
+					value = value + 400;
+				} else {
+					while(threadDownload.isAlive()) {
+						cont = true;
+					}
+
+					cont = false;
+				}
+			}
+
+//			java.lang.Thread.sleep(15000);
 
 			save(list);
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, "Não foi possivel baixar os dados dos personagens");
-		}
-	}
-
-	public void downloadCharacterProfile(RestClient client, List<MarvelCharacter> list, Integer offset) throws IOException {
-		Result<MarvelCharacter> characters = client.getCharacters(new CharacterParameterBuilder().withOffset(offset).withLimit(100).create());
-		list.addAll(characters.getData().getResults());
-
-		if(characters.getData().getTotal() > list.size()) {
-			downloadCharacterProfile(client, list, offset + 100);
 		}
 	}
 
