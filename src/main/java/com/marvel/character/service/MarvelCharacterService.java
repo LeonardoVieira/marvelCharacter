@@ -21,11 +21,9 @@ public interface MarvelCharacterService {
 
 	public abstract void save(List<MarvelCharacter> marvelCharacterList);
 
-	public abstract void login(User user) throws MarvelException;
-
 	public abstract MarvelCharacter findById(Integer id);
 
-	public abstract Result<Comic> findComicsByCharacterId(Integer id);
+	public abstract Result<Comic> findComicsByCharacterId(Integer id, User user) throws MarvelException;
 
-	public abstract void downloadCharacterProfile() throws MarvelException;
+	public abstract void downloadCharacterProfile(User user) throws MarvelException;
 }

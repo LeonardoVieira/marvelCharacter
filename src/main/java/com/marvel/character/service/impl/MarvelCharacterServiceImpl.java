@@ -31,8 +31,6 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 	@Autowired
 	private MarvelCharacterRepository marvelCharacterRepository;
 
-	RestClient client = null;
-
 	/*
 	 * (non-Javadoc)
 	 * @see com.digital.pages.marvel.service.ManufactureService#findAll()
@@ -51,47 +49,36 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 		marvelCharacterRepository.save(marvelCharacterList);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.digital.pages.marvel.service.MarvelCharacterService#login(com.digital.pages.marvel.model.User)
-	 */
-	@Override
-	public void login(User user) throws MarvelException {
-		createRestClient(user);
-	}
-
 	@Override
 	@Cacheable("characters")
-	public void downloadCharacterProfile() throws MarvelException {
+	public void downloadCharacterProfile(User user) throws MarvelException {
 		try {
 			for(char alphabet = 'A'; alphabet <= 'Z'; alphabet++) {
-				Result<MarvelCharacter> characters = client.getCharacters(new CharacterParameterBuilder().nameStartsWith(String.valueOf(alphabet)).create());
+				Result<MarvelCharacter> characters = createRestClient(user).getCharacters(new CharacterParameterBuilder().nameStartsWith(String.valueOf(alphabet)).create());
 				save(characters.getData().getResults());
-				break;
 			}
 		} catch (IOException e) {
 			throw new MarvelException("Não foi possivel baixar os dados dos personagens");
 		}
 	}
 
-	private void createRestClient(User user) {
-		client = new RestClient(user.getPrivateKey(), user.getPublicKey());
+	private RestClient createRestClient(User user) {
+		return new RestClient(user.getPrivateKey(), user.getPublicKey());
 	}
 
 	@Override
+	@Cacheable("character")
 	public MarvelCharacter findById(Integer id) {
 		return marvelCharacterRepository.findOne(id);
 	}
 
 	@Override
-	public Result<Comic> findComicsByCharacterId(Integer id) {
+	@Cacheable("profile")
+	public Result<Comic> findComicsByCharacterId(Integer id, User user) throws MarvelException {
 		try {
-			return client.getCharactersComics(new ComicParametersBuilder(id).create());
+			return createRestClient(user).getCharactersComics(new ComicParametersBuilder(id).create());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new MarvelException("Não foi possivel recuperar os dados dos HQ's dos personagens");
 		}
-
-		return null;
 	}
 }

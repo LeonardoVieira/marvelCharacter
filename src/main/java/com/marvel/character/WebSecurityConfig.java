@@ -1,5 +1,4 @@
-package com.marvel.character;
-//package com.digital.pages.marvel;
+//package com.marvel.character;
 //
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.context.annotation.Configuration;
@@ -21,14 +20,13 @@ package com.marvel.character;
 //		http.authorizeRequests()
 //		.antMatchers("/resources/**", "/registration")
 //			.permitAll().anyRequest().authenticated()
-//		.and()
-//			.formLogin().loginPage("/login").permitAll()
-//		.and()
-//			.logout().permitAll();
+//		.and().formLogin().loginPage("/").permitAll()
+//		.and().logout().permitAll();
 //	}
 //
 //	@Autowired
 //	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.userDetailsService(userDetailsService);
+////		auth.userDetailsService(userDetailsService);
+//		auth.inMemoryAuthentication().withUser("user").password("password").authorities("ADMIN");
 //	}
 //}
