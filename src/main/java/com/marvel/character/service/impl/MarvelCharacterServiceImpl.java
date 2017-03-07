@@ -4,6 +4,7 @@
 package com.marvel.character.service.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,10 +54,15 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 	@Cacheable("characters")
 	public void downloadCharacterProfile(User user) throws MarvelException {
 		try {
+			List<MarvelCharacter> list = new ArrayList<>();
+			RestClient client = createRestClient(user);
+
 			for(char alphabet = 'A'; alphabet <= 'Z'; alphabet++) {
-				Result<MarvelCharacter> characters = createRestClient(user).getCharacters(new CharacterParameterBuilder().nameStartsWith(String.valueOf(alphabet)).create());
-				save(characters.getData().getResults());
+				Result<MarvelCharacter> characters = client.getCharacters(new CharacterParameterBuilder().nameStartsWith(String.valueOf(alphabet)).create());
+				list.addAll(characters.getData().getResults());
 			}
+
+			save(list);
 		} catch (IOException e) {
 			throw new MarvelException("Não foi possivel baixar os dados dos personagens");
 		}
