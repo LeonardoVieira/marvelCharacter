@@ -3,14 +3,18 @@
  */
 package com.marvel.character.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 /**
  * @author leonardo
  *
  */
 public class User {
 
+	@NotEmpty(message = "erro public key")
 	private String publicKey;
 
+	@NotEmpty(message = "erro private key")
 	private String privateKey;
 
 	/**

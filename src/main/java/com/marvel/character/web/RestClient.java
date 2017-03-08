@@ -11,7 +11,7 @@ import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.marvel.character.exception.MarvelRestException;
+import com.marvel.character.exception.MarvelException;
 import com.marvel.character.model.CollectionURI;
 import com.marvel.character.model.CollectionURIDeserializer;
 import com.marvel.character.model.Comic;
@@ -50,7 +50,7 @@ public class RestClient {
 	 * @return
 	 * @throws IOException
 	 */
-	public Result<MarvelCharacter> getCharacters() throws IOException {
+	public Result<MarvelCharacter> getCharacters() throws MarvelException {
 		final String result = getURL(urlFactory.getCharactersURL(new CharacterParameterBuilder().create()));
 		return convertToResult(MarvelCharacter.class, result);
 	}
@@ -62,7 +62,7 @@ public class RestClient {
 	 * @return
 	 * @throws IOException
 	 */
-	public Result<MarvelCharacter> getCharacters(CharacterParameters characterParameters) throws IOException {
+	public Result<MarvelCharacter> getCharacters(CharacterParameters characterParameters) throws MarvelException {
 		final String result = getURL(urlFactory.getCharactersURL(characterParameters));
 		return convertToResult(MarvelCharacter.class, result);
 	}
@@ -74,7 +74,7 @@ public class RestClient {
 	 * @return
 	 * @throws IOException
 	 */
-	public Result<MarvelCharacter> getCharacter(int characterId) throws IOException {
+	public Result<MarvelCharacter> getCharacter(int characterId) throws MarvelException {
 		final String result = getURL(urlFactory.getCharacterURL(characterId));
 		return convertToResult(MarvelCharacter.class, result);
 	}
@@ -86,24 +86,35 @@ public class RestClient {
 	 * @return
 	 * @throws IOException
 	 */
-	public Result<Comic> getCharactersComics(ComicParameters comicParameters) throws IOException {
+	public Result<Comic> getCharactersComics(ComicParameters comicParameters) throws MarvelException {
 		final String result = getURL(urlFactory.getCharactersComicsURL(comicParameters));
 		return convertToResult(Comic.class, result);
 	}
 
-	private <T> Result<T> convertToResult(Class clazz, String result) throws IOException {
-		JavaType javaType = objectMapper.getTypeFactory().constructParametricType(Result.class, clazz);
-		final Result<T> mappedResult = objectMapper.readValue(result, javaType);
-		mappedResult.setRawResponse(result);
-		return mappedResult;
+	private <T> Result<T> convertToResult(Class clazz, String result) throws MarvelException {
+		try {
+			JavaType javaType = objectMapper.getTypeFactory().constructParametricType(Result.class, clazz);
+			final Result<T> mappedResult = objectMapper.readValue(result, javaType);
+			mappedResult.setRawResponse(result);
+
+			return mappedResult;
+		} catch (IOException e) {
+			throw new MarvelException("Erro ao converter resultado");
+		}
 	}
 
-	private String getURL(String url) throws IOException {
-		final HttpResponse httpResponse = getResponse(url);
-		if (httpResponse.getStatusLine().getStatusCode() != 200) {
-			throw new MarvelRestException(httpResponse);
+	private String getURL(String url) throws MarvelException {
+		try {
+			final HttpResponse httpResponse = getResponse(url);
+
+			if (httpResponse.getStatusLine().getStatusCode() != 200) {
+				throw new MarvelException(httpResponse.getStatusLine().getReasonPhrase());
+			}
+
+			return EntityUtils.toString(httpResponse.getEntity());
+		} catch (IOException e) {
+			throw new MarvelException("Erro ao recuperar URL");
 		}
-		return EntityUtils.toString(httpResponse.getEntity());
 	}
 
 	private HttpResponse getResponse(String url) throws IOException {

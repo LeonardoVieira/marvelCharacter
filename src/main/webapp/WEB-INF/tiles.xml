@@ -20,4 +20,9 @@
 		<put-attribute name="title" value="Character" />
 		<put-attribute name="body" value="/views/character/profile.jsp" />
 	</definition>
+
+	<definition name="digital.pages.marvel.character.error" extends="digital.pages.marvel.character.login">
+		<put-attribute name="title" value="Error" />
+		<put-attribute name="body" value="/views/error/errorPage.jsp" />
+	</definition>
 </tiles-definitions>

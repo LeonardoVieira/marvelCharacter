@@ -12,6 +12,9 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.validation.Validator;
+
+import com.marvel.character.web.validator.UserValidator;
 
 @EnableCaching
 @SpringBootApplication
@@ -25,6 +28,12 @@ public class WebApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(WebApplication.class, args);
 	}
+
+	@Bean
+	public static Validator configurationPropertiesValidator() {
+		return new UserValidator();
+	}
+
 	/**
 	 * Spring Cache configuring method
 	 * 

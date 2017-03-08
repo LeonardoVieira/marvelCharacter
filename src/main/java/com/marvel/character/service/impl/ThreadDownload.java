@@ -1,14 +1,18 @@
 package com.marvel.character.service.impl;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.marvel.character.exception.MarvelException;
 import com.marvel.character.model.MarvelCharacter;
 import com.marvel.character.model.Result;
 import com.marvel.character.util.parameters.CharacterParameterBuilder;
 import com.marvel.character.web.RestClient;
 
 public class ThreadDownload extends Thread {
+
+	private static final Logger LOGGER = Logger.getLogger(ThreadDownload.class.getName());
 
 	private int offset;
 
@@ -33,14 +37,9 @@ public class ThreadDownload extends Thread {
 				Result<MarvelCharacter> characters = client.getCharacters(new CharacterParameterBuilder().withOffset(offset).withLimit(100).create());
 				list.addAll(characters.getData().getResults());
 			}
-		} catch (IOException e) {
-			// TODO: handle exception
+		} catch (MarvelException e) {
+			LOGGER.log(Level.SEVERE, "Erro ao fazer download dos dados dos personagens");
 		}
-	}
-
-	public void downloadCharacterProfile(RestClient client, List<MarvelCharacter> list, Integer offset) throws IOException {
-		Result<MarvelCharacter> characters = client.getCharacters(new CharacterParameterBuilder().withOffset(offset).withLimit(100).create());
-		list.addAll(characters.getData().getResults());
 	}
 
 	public int getOffset() {

@@ -3,8 +3,6 @@
  */
 package com.marvel.character.service.impl;
 
-import java.io.IOException;
-import java.lang.Thread.State;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -62,7 +60,7 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 			List<MarvelCharacter> list = new ArrayList<>();
 
 			Result<MarvelCharacter> characters = client.getCharacters(new CharacterParameterBuilder().withOffset(0).withLimit(1).create());
-			int total = characters.getData().getTotal(); //1485
+			int total = characters.getData().getTotal();
 			boolean cont = true;
 			int value = 0;
 
@@ -81,11 +79,12 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 			java.lang.Thread.sleep(15000);
 
 			save(list);
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "Não foi possivel baixar os dados dos personagens");
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "Não foi possivel baixar os dados dos personagens");
+			throw new MarvelException("Não foi possivel baixar os dados dos personagens");
+		} catch (MarvelException e) {
+			LOGGER.log(Level.SEVERE, "Dados incorretos");
+			throw new MarvelException("Dados incorretos");
 		}
 	}
 
@@ -98,11 +97,7 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 	@Override
 	@Cacheable("profile")
 	public Result<Comic> findComicsByCharacterId(Integer id, String privateKey, String publicKey) throws MarvelException {
-		try {
-			RestClient client = new RestClient(privateKey, publicKey);
-			return client.getCharactersComics(new ComicParametersBuilder(id).create());
-		} catch (IOException e) {
-			throw new MarvelException("Não foi possivel recuperar os dados dos HQ's dos personagens");
-		}
+		RestClient client = new RestClient(privateKey, publicKey);
+		return client.getCharactersComics(new ComicParametersBuilder(id).create());
 	}
 }

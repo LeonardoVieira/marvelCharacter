@@ -4,45 +4,25 @@
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
-	<script type="text/javascript" class="init">
-	
-
-function filterGlobal () {
-	$('#example').DataTable().search( 
-		$('#global_filter').val(),
-		$('#global_regex').prop('checked'), 
-		$('#global_smart').prop('checked')
-	).draw();
-}
-
-function filterColumn ( i ) {
-	$('#marvelTable').DataTable().column( i ).search( 
-		$('#col'+i+'_filter').val(),
-		$('#col'+i+'_regex').prop('checked'), 
-		$('#col'+i+'_smart').prop('checked')
-	).draw();
-}
-
-$(document).ready(function() {
-	$('#marvelTable').DataTable( {
-		"language": {
-			"lengthMenu": "Exibir _MENU_ registros por página",
-			"zeroRecords": "Nenhum personagem encontrado",
-			"info": "Exibindo _PAGE_ de _PAGES_",
-			"infoEmpty": "Nenhum personagem encontrado",
-			"infoFiltered": "(foram filtrados _MAX_ personagens)",
-			"search" : "Filtrar: ",
-			"paginate": {
-				"previous": "Anterior",
-				"next": "Próximo"
+<script type="text/javascript" class="init">
+	$(document).ready(function() {
+		$('#marvelTable').DataTable( {
+			"language": {
+				"lengthMenu": "Exibir _MENU_ registros por página",
+				"zeroRecords": "Nenhum personagem encontrado",
+				"info": "Exibindo _PAGE_ de _PAGES_",
+				"infoEmpty": "Nenhum personagem encontrado",
+				"infoFiltered": "(foram filtrados _MAX_ personagens)",
+				"search" : "Filtrar: ",
+				"paginate": {
+					"previous": "Anterior",
+					"next": "Próximo"
+				}
 			}
-		}
-	});
-
-} );
-
-
-	</script>
+		});
+	
+	} );
+</script>
 
 <div class="page-wrap">
 
