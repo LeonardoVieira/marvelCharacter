@@ -35,4 +35,4 @@ efetuar uma chamada DELETE
 http://localhost:8090/marvelCharacter/rest/{id}
 
 ### exemplo:
-curl -X PUT http://localhost:8090/marvelCharacter/rest/123456
+curl -X DELETE http://localhost:8090/marvelCharacter/rest/123456
