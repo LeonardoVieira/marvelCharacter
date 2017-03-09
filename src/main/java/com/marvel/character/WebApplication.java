@@ -56,7 +56,6 @@ public class WebApplication extends SpringBootServletInitializer {
 		List<ConcurrentMapCache> caches = new ArrayList<ConcurrentMapCache>();
 
 		caches.add(new ConcurrentMapCache("characters"));
-		caches.add(new ConcurrentMapCache("character"));
 		caches.add(new ConcurrentMapCache("profile"));
 
 		return caches;

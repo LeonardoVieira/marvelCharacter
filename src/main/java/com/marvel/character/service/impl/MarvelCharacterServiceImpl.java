@@ -76,7 +76,7 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 				}
 			}
 
-			java.lang.Thread.sleep(15000);
+			java.lang.Thread.sleep(18000);
 
 			save(list);
 		} catch (InterruptedException e) {
@@ -89,7 +89,6 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 	}
 
 	@Override
-	@Cacheable("character")
 	public MarvelCharacter findById(Integer id) {
 		return marvelCharacterRepository.findOne(id);
 	}
@@ -99,5 +98,20 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
 	public Result<Comic> findComicsByCharacterId(Integer id, String privateKey, String publicKey) throws MarvelException {
 		RestClient client = new RestClient(privateKey, publicKey);
 		return client.getCharactersComics(new ComicParametersBuilder(id).create());
+	}
+
+	@Override
+	public MarvelCharacter save(MarvelCharacter marvelCharacter) {
+		return marvelCharacterRepository.save(marvelCharacter);
+	}
+
+	@Override
+	public MarvelCharacter update(MarvelCharacter marvelCharacter) {
+		return save(marvelCharacter);
+	}
+
+	@Override
+	public void delete(Integer id) {
+		marvelCharacterRepository.delete(id);
 	}
 }

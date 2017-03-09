@@ -25,4 +25,10 @@ public interface MarvelCharacterService {
 	public abstract Result<Comic> findComicsByCharacterId(Integer id, String privateKey, String publicKey) throws MarvelException;
 
 	public abstract void downloadCharacterProfile(String privateKey, String publicKey) throws MarvelException;
+
+	public abstract MarvelCharacter save(MarvelCharacter marvelCharacter);
+
+	public abstract MarvelCharacter update(MarvelCharacter marvelCharacter);
+
+	public abstract void delete(Integer id);
 }

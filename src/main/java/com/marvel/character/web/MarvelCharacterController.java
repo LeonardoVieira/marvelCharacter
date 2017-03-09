@@ -3,8 +3,6 @@
  */
 package com.marvel.character.web;
 
-import javax.management.RuntimeErrorException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,13 +28,14 @@ import com.marvel.character.web.validator.UserValidator;
  *
  */
 @Controller
-@RequestMapping()
+@RequestMapping
 public class MarvelCharacterController extends WebMvcConfigurerAdapter {
 
 	private static final String MAPPING = "digital.pages.marvel.character.";
 	private static final String MAPPING_LIST = MAPPING + "list";
 	private static final String MAPPING_LOGIN = MAPPING + "login";
 	private static final String MAPPING_PROFILE = MAPPING + "profile";
+	private static final String MAPPING_ERROR = MAPPING + "error";
 
 	@Autowired
 	private HttpSession httpSession;
@@ -48,16 +45,6 @@ public class MarvelCharacterController extends WebMvcConfigurerAdapter {
 
 	@Autowired
 	private UserValidator userValidator;
-
-//	@RequestMapping(value = "/list", method = RequestMethod.GET)
-//	public @ResponseBody List<MarvelCharacter> manufactureList(Model model) {
-//		return marvelCharacterService.findAll();
-//	}
-
-	@InitBinder
-	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
-		binder.setValidator(userValidator);
-	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String login(Model model) {
@@ -123,6 +110,6 @@ public class MarvelCharacterController extends WebMvcConfigurerAdapter {
 	 */
 	@ExceptionHandler(Exception.class)
 	public String exceptionHandler(Exception exception) {
-		return "digital.pages.marvel.character.error";
+		return MAPPING_ERROR;
 	}
 }
